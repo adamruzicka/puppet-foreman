@@ -199,6 +199,8 @@
 #
 # $rails_cache_store::            Set rails cache store
 #
+# $instance_id::                  Foreman instance id
+#
 # === Keycloak parameters:
 #
 # $keycloak::                     Enable Keycloak support. Note this is limited
@@ -308,6 +310,7 @@ class foreman (
   Boolean $keycloak = $foreman::params::keycloak,
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,
+  String $instance_id = $foreman::params::instance_id,
 ) inherits foreman::params {
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'
