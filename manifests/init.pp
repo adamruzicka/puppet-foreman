@@ -121,6 +121,8 @@
 #
 # $oauth_consumer_secret::        OAuth consumer secret
 #
+# $oauth_effective_user::         User to be used for REST interaction
+#
 # $http_keytab::                  Path to keytab to be used for Kerberos authentication on the WebUI. If left empty, it will be automatically determined.
 #
 # $pam_service::                  PAM service used for host-based access control in IPA
@@ -231,6 +233,7 @@ class foreman (
   Boolean $oauth_map_users = $foreman::params::oauth_map_users,
   String $oauth_consumer_key = $foreman::params::oauth_consumer_key,
   String $oauth_consumer_secret = $foreman::params::oauth_consumer_secret,
+  String $oauth_effective_user = $foreman::params::oauth_effective_user,
   String $initial_admin_username = $foreman::params::initial_admin_username,
   String $initial_admin_password = $foreman::params::initial_admin_password,
   Optional[String] $initial_admin_first_name = $foreman::params::initial_admin_first_name,
@@ -319,6 +322,8 @@ class foreman (
   } elsif $keycloak {
     fail("${facts['networking']['hostname']}: External authentication via Keycloak can only be enabled when Apache is used.")
   }
+
+  include foreman::register
 
   # Anchor these separately so as not to break
   # the notify between main classes
