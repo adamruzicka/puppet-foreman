@@ -18,7 +18,7 @@ class foreman::register {
       consumer_secret => $foreman::oauth_consumer_secret,
       effective_user  => $foreman::oauth_effective_user,
       ssl_ca          => $foreman::server_ssl_ca,
-      require         => $foreman_host[$foreman::servername],
+      require         => Foreman_host[$foreman::servername],
     }
   }
 }
