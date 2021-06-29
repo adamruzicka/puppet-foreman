@@ -12,7 +12,7 @@ Puppet::Type.type(:foreman_host).provide(:rest_v3, :parent => Puppet::Type.type(
       :certname => resource[:name],
       :facts => resource[:facts]
     }.to_json
-    r = request(:post, path, {}, payload)
+    r = request(:post, path, {}, {:host => payload})
 
     unless success?(r)
       error_string = "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(r)}"
