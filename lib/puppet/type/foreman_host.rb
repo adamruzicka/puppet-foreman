@@ -8,6 +8,8 @@ Puppet::Type.newtype(:foreman_host) do
   end
 
   newparam(:facts) do
+    desc 'Hash of facts about the host'
+
     defaultto {}
   end
 
