@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:foreman_instance_host) do
-  desc 'foreman_host marks a host as foreman.'
+  desc 'foreman_instance_host marks a host as foreman.'
 
   ensurable
 

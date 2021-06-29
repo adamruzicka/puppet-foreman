@@ -1,4 +1,4 @@
-Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::Type.type(:foreman_resource).provider(:rest_v3)) do
+Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::Type.type(:foreman_host).provider(:rest_v3)) do
   confine :feature => [:json, :oauth]
 
   def exists?
@@ -13,7 +13,7 @@ Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::T
       raise Puppet::Error.new(error_string)
     end
 
-    path = "api/v2/instance/hosts/#{id}"
+    path = "api/v2/instance/hosts/#{resource[:name]}"
     r = request(:put, path, {})
 
     unless success?(r)
@@ -22,31 +22,9 @@ Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::T
     end
   end
 
-  def destroy
-    path = "api/v2/instance/hosts/#{id}"
-    r = request(:delete, path, {})
+  private
 
-    unless success?(r)
-      error_string = "Error making DELETE request to Foreman at #{request_uri(path)}: #{error_message(r)}"
-      raise Puppet::Error.new(error_string)
-    end
-  end
-
-  def id
-    host['id'] if host
-  end
-
-  def host
-    @host ||= begin
-      path = 'api/v2/hosts'
-      r = request(:get, path, :search => %{name="#{resource[:name]}"})
-
-      unless success?(r)
-        error_string = "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(r)}"
-        raise Puppet::Error.new(error_string)
-      end
-
-      JSON.load(r.body)['results'].first
-    end
+  def destroy_path
+    "api/v2/instance/hosts/#{id}"
   end
 end
