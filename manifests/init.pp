@@ -174,6 +174,8 @@
 #
 # $rails_cache_store::            Set rails cache store
 #
+# $register_in_foreman::          Register host in Foreman
+#
 # === Dynflow parameters:
 #
 # $dynflow_manage_services::      Whether to manage the dynflow services
@@ -286,6 +288,7 @@ class foreman (
   Boolean $keycloak = $foreman::params::keycloak,
   String[1] $keycloak_app_name = $foreman::params::keycloak_app_name,
   String[1] $keycloak_realm = $foreman::params::keycloak_realm,
+  Boolean $register_in_foreman = $foreman::params::register_in_foreman,
 ) inherits foreman::params {
   if $db_sslmode == 'UNSET' and $db_root_cert {
     $db_sslmode_real = 'verify-full'

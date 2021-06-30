@@ -187,4 +187,5 @@ class foreman::params inherits foreman::globals {
   $server_port     = 80
   $server_ssl_port = 443
 
+  $register_in_foreman = true
 }
