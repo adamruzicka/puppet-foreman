@@ -10,7 +10,7 @@ Puppet::Type.newtype(:foreman_host) do
   newparam(:facts) do
     desc 'Hash of facts about the host'
 
-    defaultto {}
+    defaultto { $facts }
   end
 
   newparam(:base_url) do
