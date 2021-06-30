@@ -19,8 +19,8 @@ describe Puppet::Type.type(:foreman_instance_host).provider(:rest_v3) do
 
   describe '#create' do
     it 'sends PUT request' do
-      expect(provider).to receive(:host).thrice.and_return({"id" => 1})
-      expect(provider).to receive(:request).with(:put, 'api/v2/instance/hosts/1', {}).and_return(
+      expect(provider).to receive(:host).and_return({"id" => 1})
+      expect(provider).to receive(:request).with(:put, 'api/v2/instance/hosts/proxy.example.com', {}).and_return(
         double(:code => '201', :body => '')
       )
       provider.create
@@ -34,8 +34,7 @@ describe Puppet::Type.type(:foreman_instance_host).provider(:rest_v3) do
 
   describe '#destroy' do
     it 'sends DELETE request' do
-      expect(provider).to receive(:id).and_return(1)
-      expect(provider).to receive(:request).with(:delete, 'api/v2/instance/hosts/1', {}).and_return(double(:code => '204'))
+      expect(provider).to receive(:request).with(:delete, 'api/v2/instance/hosts/proxy.example.com', {}).and_return(double(:code => '204'))
       provider.destroy
     end
   end

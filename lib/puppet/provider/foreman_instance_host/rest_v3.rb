@@ -25,6 +25,6 @@ Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::T
   private
 
   def destroy_path
-    "api/v2/instance/hosts/#{id}"
+    "api/v2/instance/hosts/#{resource[:name]}"
   end
 end
