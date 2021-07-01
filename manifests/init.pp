@@ -326,7 +326,9 @@ class foreman (
     fail("${facts['networking']['hostname']}: External authentication via Keycloak can only be enabled when Apache is used.")
   }
 
-  include foreman::register
+  if $foreman::register_in_foreman {
+    include foreman::register
+  }
 
   # Anchor these separately so as not to break
   # the notify between main classes
