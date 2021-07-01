@@ -10,6 +10,7 @@ class foreman::register (
     consumer_secret => $foreman::oauth_consumer_secret,
     effective_user  => $foreman::oauth_effective_user,
     ssl_ca          => $foreman::server_ssl_ca,
+    facts           => $facts,
   }
 
   foreman_instance_host { $foreman_host_name:
