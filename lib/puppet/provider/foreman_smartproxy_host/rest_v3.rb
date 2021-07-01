@@ -19,10 +19,10 @@ Puppet::Type.type(:foreman_smartproxy_host).provide(:rest_v3, :parent => Puppet:
     end
 
     path = "api/v2/smart_proxies/#{proxy_id}/hosts/#{id}"
-    r = request(:put, path, {})
+    req = request(:put, path, {})
 
-    unless success?(r)
-      error_string = "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(r)}"
+    unless success?(req)
+      error_string = "Error making PUT request to Foreman at #{request_uri(path)}: #{error_message(req)}"
       raise Puppet::Error.new(error_string)
     end
   end
@@ -30,14 +30,14 @@ Puppet::Type.type(:foreman_smartproxy_host).provide(:rest_v3, :parent => Puppet:
   def proxy
     @proxy ||= begin
       path = 'api/v2/smart_proxies'
-      r = request(:get, path, :search => %{name="#{resource[:name]}"})
+      req = request(:get, path, :search => %{name="#{resource[:name]}"})
 
-      unless success?(r)
-        error_string = "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(r)}"
+      unless success?(req)
+        error_string = "Error making GET request to Foreman at #{request_uri(path)}: #{error_message(req)}"
         raise Puppet::Error.new(error_string)
       end
 
-      JSON.load(r.body)['results'][0]
+      JSON.load(req.body)['results'][0]
     end
   end
 
