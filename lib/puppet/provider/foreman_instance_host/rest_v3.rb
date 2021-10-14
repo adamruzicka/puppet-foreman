@@ -13,7 +13,7 @@ Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::T
       raise Puppet::Error.new(error_string)
     end
 
-    path = "api/v2/instance/hosts/#{resource[:name]}"
+    path = "api/v2/instance_hosts/#{resource[:name]}"
     req = request(:put, path, {})
 
     unless success?(req)
@@ -25,6 +25,6 @@ Puppet::Type.type(:foreman_instance_host).provide(:rest_v3, :parent => Puppet::T
   private
 
   def destroy_path
-    "api/v2/instance/hosts/#{resource[:name]}"
+    "api/v2/instance_hosts/#{resource[:name]}"
   end
 end
