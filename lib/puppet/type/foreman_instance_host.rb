@@ -46,4 +46,8 @@ Puppet::Type.newtype(:foreman_instance_host) do
   autorequire(:anchor) do
     ['foreman::service']
   end
+
+  autorequire(:foreman_host) do
+    [self[:name]]
+  end
 end

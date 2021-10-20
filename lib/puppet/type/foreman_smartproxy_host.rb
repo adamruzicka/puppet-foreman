@@ -46,4 +46,8 @@ Puppet::Type.newtype(:foreman_smartproxy_host) do
   autorequire(:anchor) do
     ['foreman::service']
   end
+
+  autorequire(:foreman_smartproxy) do
+    [self[:name]]
+  end
 end
