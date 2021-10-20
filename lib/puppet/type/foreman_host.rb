@@ -49,7 +49,7 @@ Puppet::Type.newtype(:foreman_host) do
     defaultto 500
   end
 
-  autorequire(:class) do
+  autorequire(:anchor) do
     ['foreman::service']
   end
 end

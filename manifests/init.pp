@@ -314,6 +314,8 @@ class foreman (
   Class['foreman::config'] ~> Class['foreman::database', 'foreman::service']
   Class['foreman::database'] ~> Class['foreman::service']
   Class['foreman::service'] -> Foreman_smartproxy <| base_url == $foreman_url |>
+  anchor { 'foreman::service': } # lint:ignore:anchor_resource
+  Class['foreman::service'] -> Anchor['foreman::service']
 
   if $apache {
     Class['foreman::database'] -> Class['apache::service']
