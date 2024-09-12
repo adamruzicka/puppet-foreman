@@ -135,6 +135,8 @@
 # $ipa_sssd_default_realm::       If ipa_manage_sssd is true, set default_domain_suffix option in sssd configuration to this value
 #                                 to allow logging in without having to provide the domain name.
 #
+# $ipa_use_gssproxy::             If ipa_use_gssproxy is true, external authentication will use GSSProxy.
+#
 # $websockets_encrypt::           Whether to encrypt websocket connections
 #
 # $websockets_ssl_key::           SSL key file to use when encrypting websocket connections

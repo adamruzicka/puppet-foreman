@@ -8,6 +8,7 @@
     AuthBasicProvider PAM
     AuthPAMService <%= scope.lookupvar('foreman::pam_service') %>
   </If>
+  <% if scope.lookupvar('foreman::ipa_use_gssproxy') %>
   <Else>
     AuthType GSSAPI
     AuthName "GSSAPI Single Sign On Login"
@@ -15,6 +16,7 @@
     GssapiSSLonly On
     GssapiLocalName <%= @gssapi_local_name %>
   </Else>
+  <% end %>
   <% else %>
   AuthType Basic
   AuthName "PAM Authentication"

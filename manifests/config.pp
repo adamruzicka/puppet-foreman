@@ -207,22 +207,28 @@ class foreman::config {
         content => template('foreman/pam_service.erb'),
       }
 
-      $http_keytab = pick($foreman::http_keytab, "${apache::conf_dir}/http.keytab")
+      if $foreman::ipa_use_gssproxy {
+        $http_keytab = pick($foreman::http_keytab, "${apache::conf_dir}/http.keytab")
 
-      exec { 'ipa-getkeytab':
-        command => "/bin/echo Get keytab \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
-          && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -k ${http_keytab} -p HTTP/${facts['networking']['fqdn']} \
-          && kdestroy -c KEYRING:session:get-http-service-keytab",
-        creates => $http_keytab,
-      }
-      -> file { $http_keytab:
-        ensure => file,
-        owner  => $apache::user,
-        mode   => '0600',
-      }
+        exec { 'ipa-getkeytab':
+          command => "/bin/echo Get keytab \
+            && KRB5CCNAME=KEYRING:session:get-http-service-keytab kinit -k \
+            && KRB5CCNAME=KEYRING:session:get-http-service-keytab /usr/sbin/ipa-getkeytab -k ${http_keytab} -p HTTP/${facts['networking']['fqdn']} \
+            && kdestroy -c KEYRING:session:get-http-service-keytab",
+          creates => $http_keytab,
+        }
+        -> file { $http_keytab:
+          ensure => file,
+          owner  => $apache::user,
+          mode   => '0600',
+        }
 
-      $gssapi_local_name = bool2str($foreman::gssapi_local_name, 'On', 'Off')
+        $gssapi_local_name = bool2str($foreman::gssapi_local_name, 'On', 'Off')
+
+        foreman::config::apache::fragment { 'auth_gssapi':
+          ssl_content => template('foreman/auth_gssapi.conf.erb'),
+        }
+      }
 
       foreman::config::apache::fragment { 'intercept_form_submit':
         ssl_content => template('foreman/intercept_form_submit.conf.erb'),
@@ -230,10 +236,6 @@ class foreman::config {
 
       foreman::config::apache::fragment { 'lookup_identity':
         ssl_content => template('foreman/lookup_identity.conf.erb'),
-      }
-
-      foreman::config::apache::fragment { 'auth_gssapi':
-        ssl_content => template('foreman/auth_gssapi.conf.erb'),
       }
 
       foreman::config::apache::fragment { 'external_auth_api':
